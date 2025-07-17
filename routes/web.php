@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Article\ArticleForm;
+use App\Livewire\Article\ArticleIndex;
 
 Route::view('/', 'welcome');
 
@@ -12,13 +14,20 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-// Admin
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+// Group route untuk Admin Panel
+Route::prefix('admin')
+    ->middleware(['auth', 'role:admin|editor']) // Hanya bisa diakses admin atau editor
+    ->name('admin.')
+    ->group(function () {
 
-    Route::get('/dashboard', function () {
-        // Hanya user dengan peran 'admin' yang bisa mengakses ini
-        return 'Selamat datang di Dashboard Admin!';
-    })->name('dashboard');
-});
+        // Route untuk daftar artikel
+        Route::get('/articles', ArticleIndex::class)->name('articles.index');
+
+        // Route untuk membuat artikel baru
+        Route::get('/articles/create', ArticleForm::class)->name('articles.create');
+
+        // Route untuk mengedit artikel
+        Route::get('/articles/{article}/edit', ArticleForm::class)->name('articles.edit');
+    });
 
 require __DIR__ . '/auth.php';
