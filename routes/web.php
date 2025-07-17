@@ -12,4 +12,13 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-require __DIR__.'/auth.php';
+// Admin
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/dashboard', function () {
+        // Hanya user dengan peran 'admin' yang bisa mengakses ini
+        return 'Selamat datang di Dashboard Admin!';
+    })->name('dashboard');
+});
+
+require __DIR__ . '/auth.php';
