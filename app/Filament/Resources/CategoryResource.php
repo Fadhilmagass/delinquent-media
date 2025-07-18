@@ -12,12 +12,13 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-tag';
 
     public static function form(Form $form): Form
     {
@@ -25,14 +26,15 @@ class CategoryResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->unique(ignoreRecord: true) // Pastikan unik, kecuali untuk record saat ini
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255)
-                    ->live(onBlur: true), // 'live' untuk memicu update slug jika diperlukan
+                    ->live(onBlur: true),
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->maxLength(255)
-                    ->disabled() // Slug dibuat otomatis, jadi kita disable inputnya
-                    ->dehydrated(),
+                    ->disabled()
+                    ->dehydrated()
+                    ->dehydrateStateUsing(fn(string $state): string => Str::slug($state)),
             ]);
     }
 

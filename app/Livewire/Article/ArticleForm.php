@@ -61,7 +61,7 @@ class ArticleForm extends Component
         $article->tags()->sync($this->selectedTags);
 
         session()->flash('status', 'Article successfully saved.');
-        return $this->redirectRoute('admin.articles.index', navigate: true); // Ganti dengan route Anda nanti
+        return $this->redirectRoute('articles.index', navigate: true);
     }
 
     public function render()

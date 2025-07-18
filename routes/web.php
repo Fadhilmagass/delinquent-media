@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Article\ArticleForm;
 use App\Livewire\Article\ArticleIndex;
@@ -29,5 +30,9 @@ Route::prefix('admin')
         // Route untuk mengedit artikel
         Route::get('/articles/{article}/edit', ArticleForm::class)->name('articles.edit');
     });
+
+// Article
+Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
 
 require __DIR__ . '/auth.php';

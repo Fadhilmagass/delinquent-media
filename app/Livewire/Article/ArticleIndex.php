@@ -12,11 +12,10 @@ class ArticleIndex extends Component
 
     public function delete(Article $article)
     {
-        // Pastikan hanya admin/editor yang bisa menghapus, atau pemilik artikel
-        // Anda bisa tambahkan otorisasi di sini
+        $this->authorize('delete', $article);
         $article->delete();
         session()->flash('status', 'Article successfully deleted.');
-        return $this->redirectRoute('admin.articles.index', navigate: true);
+        return $this->redirectRoute('articles.index', navigate: true);
     }
 
     public function render()

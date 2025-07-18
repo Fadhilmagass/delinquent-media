@@ -2,22 +2,24 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\TagResource\Pages;
+use App\Filament\Resources\TagResource\RelationManagers;
 use App\Models\Tag;
 use Filament\Forms;
-use Filament\Tables;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Cache;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\TagResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\TagResource\RelationManagers;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class TagResource extends Resource
 {
     protected static ?string $model = Tag::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationIcon = 'heroicon-o-hashtag';
 
     public static function form(Form $form): Form
     {
@@ -25,14 +27,15 @@ class TagResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->unique(ignoreRecord: true) // Pastikan unik, kecuali untuk record saat ini
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255)
-                    ->live(onBlur: true), // 'live' untuk memicu update slug jika diperlukan
+                    ->live(onBlur: true),
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->maxLength(255)
-                    ->disabled() // Slug dibuat otomatis, jadi kita disable inputnya
-                    ->dehydrated(),
+                    ->disabled()
+                    ->dehydrated()
+                    ->dehydrateStateUsing(fn(string $state): string => Str::slug($state)),
             ]);
     }
 
@@ -76,16 +79,16 @@ class TagResource extends Resource
 
     public static function afterCreate(): void
     {
-        Cache::forget('all_categories');
+        Cache::forget('all_tags');
     }
 
     public static function afterSave(): void
     {
-        Cache::forget('all_categories');
+        Cache::forget('all_tags');
     }
 
     public static function afterDelete(): void
     {
-        Cache::forget('all_categories');
+        Cache::forget('all_tags');
     }
 }
