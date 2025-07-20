@@ -45,11 +45,7 @@
                                 {{ __('Profile') }}
                             </x-dropdown-link>
 
-                            <button wire:click="logout" class="w-full text-start">
-                                <x-dropdown-link>
-                                    {{ __('Log Out') }}
-                                </x-dropdown-link>
-                            </button>
+                            <livewire:logout-button />
                         </x-slot>
                     </x-dropdown>
                 </div>
@@ -102,11 +98,7 @@
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
 
-                    <button wire:click="logout" class="w-full text-start">
-                        <x-responsive-nav-link>
-                            {{ __('Log Out') }}
-                        </x-responsive-nav-link>
-                    </button>
+                    <livewire:logout-button />
                 </div>
             </div>
         @else

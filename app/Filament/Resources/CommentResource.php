@@ -17,8 +17,13 @@ use App\Filament\Resources\CommentResource\RelationManagers;
 class CommentResource extends Resource
 {
     protected static ?string $model = Comment::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
+    protected static ?string $navigationGroup = 'Articles Management';
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->hasRole('admin|editor');
+    }
 
     public static function form(Form $form): Form
     {

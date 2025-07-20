@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\BandController;
+use App\Http\Controllers\ReleaseController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Article\ArticleForm;
 use App\Livewire\Article\ArticleIndex;
@@ -17,7 +19,7 @@ Route::view('profile', 'profile')
 
 // Group route untuk Admin Panel
 Route::prefix('admin')
-    ->middleware(['auth', 'role:admin|editor']) // Hanya bisa diakses admin atau editor
+    ->middleware(['auth', 'role:admin']) // Hanya bisa diakses admin
     ->name('admin.')
     ->group(function () {
 
@@ -31,8 +33,13 @@ Route::prefix('admin')
         Route::get('/articles/{article}/edit', ArticleForm::class)->name('articles.edit');
     });
 
+// Bands & Releases
+Route::resource('bands', BandController::class)->parameters(['bands' => 'band:slug']);
+Route::get('/releases/{release:slug}', [ReleaseController::class, 'show'])->name('releases.show');
+
 // Article
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
 
 require __DIR__ . '/auth.php';
+

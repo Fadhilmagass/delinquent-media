@@ -19,6 +19,12 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
     protected static ?string $navigationIcon = 'heroicon-o-tag';
+    protected static ?string $navigationGroup = 'Articles Management';
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->hasRole('admin|editor');
+    }
 
     public static function form(Form $form): Form
     {

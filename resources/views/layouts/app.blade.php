@@ -1,70 +1,99 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    {{-- 1. Menggunakan preconnect untuk optimasi pemuatan font --}}
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 
-<body class="font-sans antialiased">
-    {{-- 2. Link "Skip to content" untuk aksesibilitas --}}
+<body class="font-sans antialiased text-slate-800 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200">
+
     <a href="#main-content"
-        class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-gray-800 focus:ring">
-        Lewati ke konten
+        class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-4 focus:px-6 focus:py-3 focus:bg-gradient-to-r focus:from-sky-500 focus:to-indigo-600 focus:text-white focus:rounded-lg focus:shadow-lg focus:ring-2 focus:ring-sky-500 focus:outline-none transition-all duration-300">
+        Lewati ke konten utama
     </a>
 
-    {{-- 3. Wrapper utama dengan latar belakang yang lebih cerah dan bersih --}}
-    <div class="flex flex-col min-h-screen bg-gray-50">
+    <div class="flex flex-col min-h-screen bg-transparent">
 
+        {{-- Navigasi utama --}}
         <livewire:layout.navigation />
 
+        {{-- Header opsional --}}
         @if (isset($header))
-            <header class="bg-white shadow-sm border-b border-gray-200">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{-- 4. Header yang lebih bermakna dengan tag H1 untuk SEO dan konsistensi --}}
-                    <h1 class="text-2xl font-bold leading-tight text-gray-900">
-                        {{ $header }}
-                    </h1>
+            <header
+                class="bg-gradient-to-r from-white via-slate-100 to-slate-200 shadow-md transition-all duration-300">
+                <div class="max-w-7xl mx-auto py-6 px-6 sm:px-8 lg:px-10">
+                    {{ $header }}
                 </div>
             </header>
         @endif
 
-        {{-- 5. Spasi vertikal yang lebih lega untuk 'ruang napas' --}}
-        <main id="main-content" class="flex-grow py-8 lg:py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                {{-- Container untuk konten agar tidak menempel di tepi layar --}}
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 sm:p-8 text-gray-900">
-                        {{ $slot }}
-                    </div>
-                </div>
+        {{-- Konten Utama --}}
+        <main id="main-content" class="flex-grow w-full focus:outline-none transition-all duration-300">
+            <div class="max-w-7xl mx-auto my-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl shadow-lg py-8 animate-fade-in">
+                {{ $slot }}
             </div>
         </main>
 
-        {{-- 6. Footer profesional dengan pemisah visual --}}
-        <footer class="bg-white border-t border-gray-200 mt-auto py-4">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
+        {{-- Footer --}}
+        <footer
+            class="w-full py-8 border-t border-slate-100 bg-gradient-to-r from-slate-100 to-slate-200 animate-fade-in-down">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-500">
                 &copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}. Hak Cipta Dilindungi.
             </div>
         </footer>
     </div>
 
-    {{-- 7. Indikator loading global yang minimalis untuk Livewire --}}
+    {{-- Indikator loading Livewire --}}
     <div wire:loading class="fixed top-0 left-0 right-0 z-50">
-        <div class="h-1 bg-gradient-to-r from-blue-500 to-teal-400 animate-pulse"></div>
+        <div class="h-1 bg-gradient-to-r from-sky-500 to-indigo-600 animate-pulse"></div>
     </div>
 
     @livewireScripts
+    <script>
+        // Animasi fade-in
+        document.querySelectorAll('.animate-fade-in').forEach(el => {
+            el.style.opacity = 0;
+            setTimeout(() => {
+                el.style.transition = 'opacity 0.7s';
+                el.style.opacity = 1;
+            }, 100);
+        });
+        document.querySelectorAll('.animate-fade-in-down').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(-20px)';
+            setTimeout(() => {
+                el.style.transition = 'opacity 0.7s, transform 0.7s';
+                el.style.opacity = 1;
+                el.style.transform = 'translateY(0)';
+            }, 200);
+        });
+    </script>
 </body>
 
 </html>

@@ -18,8 +18,13 @@ use Illuminate\Support\Facades\Cache;
 class TagResource extends Resource
 {
     protected static ?string $model = Tag::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-hashtag';
+    protected static ?string $navigationGroup = 'Articles Management';
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->hasRole('admin|editor');
+    }
 
     public static function form(Form $form): Form
     {
