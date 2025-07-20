@@ -1,42 +1,63 @@
 <x-app-layout>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-12">
-            Berita & Artikel Terbaru
+    <x-slot name="header">
+        <h1 class="text-3xl font-bold text-slate-800 leading-tight">
+            Berita & Artikel
         </h1>
+    </x-slot>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @forelse ($articles as $article)
-                <a href="{{ route('articles.show', $article) }}"
-                    class="group block bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-                    <div class="p-6">
-                        <span class="inline-block text-xs font-semibold text-blue-600 uppercase tracking-wide">
+    {{-- Form Pencarian --}}
+    <div class="mb-8">
+        <form method="GET" action="{{ route('articles.index') }}">
+            <div class="relative">
+                <input type="text" name="search" value="{{ request('search') }}" class="w-full rounded-md border-slate-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Cari artikel...">
+                <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-indigo-600 text-white hover:bg-indigo-700">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @forelse ($articles as $article)
+            <div class="bg-white border border-slate-200 rounded-xl shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                <a href="{{ route('articles.show', $article) }}" class="block h-full flex flex-col">
+                    <div class="p-6 flex-grow">
+                        <span class="inline-block text-xs font-semibold text-indigo-600 uppercase tracking-wide">
                             {{ $article->category->name }}
                         </span>
 
-                        <h2 class="mt-2 text-lg font-bold text-gray-900 group-hover:underline">
+                        <h2 class="mt-2 text-lg font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">
                             {{ $article->title }}
                         </h2>
 
-                        <p class="mt-3 text-sm text-gray-700 line-clamp-3">
+                        <p class="mt-3 text-sm text-slate-600 line-clamp-3">
                             {{ $article->excerpt }}
                         </p>
                     </div>
 
-                    <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 text-sm text-gray-600">
-                        <span>By {{ $article->user->name }}</span>
+                    <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 text-sm text-slate-500">
+                        <span>Oleh {{ $article->user->name }}</span>
                         <span class="mx-1">&bull;</span>
-                        <span>{{ $article->published_at->format('d M Y') }}</span>
+                        <span>{{ $article->published_at->diffForHumans() }}</span>
                     </div>
                 </a>
-            @empty
-                <div class="col-span-full text-center py-16">
-                    <p class="text-gray-500 text-lg">Belum ada artikel yang dipublikasikan.</p>
-                </div>
-            @endforelse
-        </div>
+            </div>
+        @empty
+            <div class="col-span-full bg-white border border-slate-200 rounded-xl p-8 text-center">
+                <p class="text-slate-500">
+                    @if (request('search'))
+                        Tidak ada artikel yang cocok dengan pencarian Anda.
+                    @else
+                        Belum ada artikel yang dipublikasikan.
+                    @endif
+                </p>
+            </div>
+        @endforelse
+    </div>
 
-        <div class="mt-12">
+    @if ($articles->hasPages())
+        <div class="mt-8">
             {{ $articles->links() }}
         </div>
-    </div>
+    @endif
 </x-app-layout>

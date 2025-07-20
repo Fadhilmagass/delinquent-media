@@ -15,10 +15,23 @@ use Illuminate\View\View;
     /**
      * Menampilkan daftar band untuk publik.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
+        $query = Band::query();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('genre', 'like', '%' . $search . '%')
+                  ->orWhere('origin', 'like', '%' . $search . '%');
+            });
+        }
+
+        $bands = $query->with('media')->latest()->paginate(12)->withQueryString();
+
         return view('bands.index', [
-            'bands' => Band::with('releases')->paginate(10),
+            'bands' => $bands,
         ]);
     }
 

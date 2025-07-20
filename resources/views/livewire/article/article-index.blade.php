@@ -29,6 +29,19 @@
         </div>
     @endif
 
+    <div class="mb-4 flex items-center gap-4">
+        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari artikel..."
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+        <select wire:model.live="category"
+            class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="">Semua Kategori</option>
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
+    </div>
+
     <div class="bg-white shadow-md rounded-xl overflow-hidden">
         <div class="hidden md:grid md:grid-cols-6 gap-4 px-6 py-3 bg-gray-50 border-b border-gray-200">
             <div class="col-span-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Judul</div>

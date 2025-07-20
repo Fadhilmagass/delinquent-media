@@ -16,6 +16,9 @@
                     <x-nav-link :href="route('articles.index')" :active="request()->routeIs('articles.index')" wire:navigate>
                         {{ __('Artikel') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('events.index')" :active="request()->routeIs('events.index')" wire:navigate>
+                        {{ __('Event') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -26,7 +29,7 @@
                         <x-slot name="trigger">
                             <button
                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-600 bg-white hover:text-gray-800 focus:outline-none transition ease-in-out duration-150">
-                                <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name"
+                                <div x-data="{ name: '{{ auth()->user()->name }}' }" x-text="name"
                                     x-on:profile-updated.window="name = $event.detail.name"></div>
 
                                 <div class="ms-1">
@@ -83,13 +86,16 @@
             <x-responsive-nav-link :href="route('articles.index')" :active="request()->routeIs('articles.index')" wire:navigate>
                 {{ __('Artikel') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('events.index')" :active="request()->routeIs('events.index')" wire:navigate>
+                {{ __('Event') }}
+            </x-responsive-nav-link>
         </div>
 
         @auth
             <div class="pt-4 pb-1 border-t border-gray-200">
                 <div class="px-4">
-                    <div class="font-medium text-base text-gray-800" x-data="{{ json_encode(['name' => auth()->user()->name]) }}"
-                        x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
+                    <div class="font-medium text-base text-gray-800" x-data="{ name: '{{ auth()->user()->name }}' }" x-text="name"
+                        x-on:profile-updated.window="name = $event.detail.name"></div>
                     <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
                 </div>
 

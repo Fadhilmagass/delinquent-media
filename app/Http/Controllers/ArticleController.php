@@ -10,12 +10,26 @@ class ArticleController extends Controller
     /**
      * Menampilkan daftar artikel yang sudah di-publish untuk publik.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::with(['user', 'category']) // Eager loading untuk performa
-            ->where('status', 'published')
-            ->latest('published_at')
-            ->paginate(10); // Paginasi standar untuk halaman publik
+        $query = Article::query()
+            ->with(['user', 'category']) // Eager loading untuk performa
+            ->where('status', 'published');
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', '%' . $search . '%')
+                  ->orWhere('body', 'like', '%' . $search . '%')
+                  ->orWhereHas('category', function ($q) use ($search) {
+                      $q->where('name', 'like', '%' . $search . '%');
+                  });
+            });
+        }
+
+        $articles = $query->latest('published_at')
+            ->paginate(10)
+            ->withQueryString(); // Paginasi standar untuk halaman publik
 
         return view('articles.index', compact('articles'));
     }

@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\BandController;
-use App\Http\Controllers\ReleaseController;
-use Illuminate\Support\Facades\Route;
 use App\Livewire\Article\ArticleForm;
+use Illuminate\Support\Facades\Route;
 use App\Livewire\Article\ArticleIndex;
+use App\Http\Controllers\BandController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ReleaseController;
 
 Route::view('/', 'welcome');
 
@@ -33,6 +34,10 @@ Route::prefix('admin')
         Route::get('/articles/{article}/edit', ArticleForm::class)->name('articles.edit');
     });
 
+// Events
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::get('/events/{event:slug}', [EventController::class, 'show'])->name('events.show');
+
 // Bands & Releases
 Route::resource('bands', BandController::class)->parameters(['bands' => 'band:slug']);
 Route::get('/releases/{release:slug}', [ReleaseController::class, 'show'])->name('releases.show');
@@ -42,4 +47,3 @@ Route::get('/articles', [ArticleController::class, 'index'])->name('articles.ind
 Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
 
 require __DIR__ . '/auth.php';
-
