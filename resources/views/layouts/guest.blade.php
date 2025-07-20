@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1516273836189-23a43c2b4e8e?q=80&w=2070">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         body {

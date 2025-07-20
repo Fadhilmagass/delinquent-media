@@ -7,8 +7,9 @@ use App\Http\Controllers\BandController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ReleaseController;
+use App\Livewire\Homepage;
 
-Route::view('/', 'welcome');
+Route::get('/', Homepage::class)->name('home');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
