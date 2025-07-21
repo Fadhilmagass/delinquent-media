@@ -59,4 +59,11 @@ class Article extends Model implements HasMedia
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function getReadingTime()
+    {
+        $wordCount = str_word_count(strip_tags($this->body));
+        $minutes = ceil($wordCount / 200);
+        return (int)$minutes;
+    }
 }
