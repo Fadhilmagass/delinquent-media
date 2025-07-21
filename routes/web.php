@@ -12,7 +12,7 @@ use App\Livewire\Homepage;
 Route::get('/', Homepage::class)->name('home');
 
 Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'role:admin|editor'])
     ->name('dashboard');
 
 Route::view('profile', 'profile')
@@ -21,7 +21,7 @@ Route::view('profile', 'profile')
 
 // Group route untuk Admin Panel
 Route::prefix('admin')
-    ->middleware(['auth', 'role:admin']) // Hanya bisa diakses admin
+    ->middleware(['auth', 'role:admin|editor']) // Hanya bisa diakses admin
     ->name('admin.')
     ->group(function () {
 

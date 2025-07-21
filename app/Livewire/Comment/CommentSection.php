@@ -5,6 +5,7 @@ namespace App\Livewire\Comment;
 use App\Models\Article;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\Comment;
 
 class CommentSection extends Component
 {
@@ -13,18 +14,27 @@ class CommentSection extends Component
     public Article $article;
 
     public string $body = '';
-    public string $guestName = '';
-    public string $guestEmail = '';
+    public string $name = '';
+    public string $email = '';
+    public string $website = ''; // Honeypot field
+
+    public function mount()
+    {
+        $this->article->loadCount(['comments' => function ($query) {
+            $query->where('status', 'approved');
+        }]);
+    }
 
     protected function rules()
     {
         $rules = [
             'body' => ['required', 'string', 'min:5'],
+            'website' => ['present', 'max:0'], // Honeypot validation
         ];
 
         if (auth()->guest()) {
-            $rules['guestName'] = ['required', 'string', 'max:255'];
-            $rules['guestEmail'] = ['required', 'email', 'max:255'];
+            $rules['name'] = ['required', 'string', 'max:255'];
+            $rules['email'] = ['required', 'email', 'max:255'];
         }
 
         return $rules;
@@ -34,28 +44,46 @@ class CommentSection extends Component
     {
         $this->validate();
 
-        $this->article->comments()->create([
-            'user_id' => auth()->id(),
-            'name' => auth()->check() ? auth()->user()->name : $this->guestName,
-            'email' => auth()->check() ? auth()->user()->email : $this->guestEmail,
+        $commentData = [
             'body' => $this->body,
-        ]);
+            'status' => \App\Enums\Comment\Status::APPROVED->value,
+        ];
 
-        $this->reset('body', 'guestName', 'guestEmail');
+        if (auth()->check()) {
+            $commentData['user_id'] = auth()->id();
+            $commentData['name'] = auth()->user()->name;
+            $commentData['email'] = auth()->user()->email;
+        } else {
+            $commentData['name'] = $this->name;
+            $commentData['email'] = $this->email;
+        }
 
-        session()->flash('comment_success', 'Komentar Anda telah dikirim dan sedang menunggu moderasi.');
+        $this->article->comments()->create($commentData);
+
+        $this->reset('body', 'name', 'email');
+
+        session()->flash('comment_success', 'Komentar Anda telah berhasil diposting.');
+    }
+
+    public function deleteComment(Comment $comment)
+    {
+        $this->authorize('delete', $comment);
+
+        $comment->delete();
+
+        session()->flash('comment_success', 'Komentar berhasil dihapus.');
+        $this->article->refresh(); // Refresh article to update comments count
     }
 
     public function render()
     {
         $comments = $this->article->comments()
             ->with('user')
-            ->where('status', 'approved')
             ->latest()
-            ->paginate(10); // ✅ solusi penting
+            ->paginate(10);
 
         return view('livewire.comment.comment-section', [
             'comments' => $comments
-        ])->layout('layouts.app');
+        ]);
     }
 }

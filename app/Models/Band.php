@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -43,5 +44,19 @@ class Band extends Model implements HasMedia
     public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('band-photos')
+            ->singleFile();
+    }
+
+    public function registerMediaConversions(Media  $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(100)
+            ->height(100)
+            ->sharpen(10);
     }
 }
