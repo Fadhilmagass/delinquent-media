@@ -8,7 +8,8 @@
                 <div class="w-20 h-20 rounded-xl mr-5 overflow-hidden flex-shrink-0 shadow-lg relative">
                     @if ($release->hasMedia('release_covers'))
                         <img src="{{ $release->getFirstMediaUrl('release_covers') }}" alt="{{ $release->title }}"
-                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 group-hover:brightness-90">
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 group-hover:brightness-90"
+                            loading="lazy">
                         <span class="absolute inset-0 rounded-xl bg-black/0 group-active:bg-black/10 transition"></span>
                     @else
                         <div

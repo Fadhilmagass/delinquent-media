@@ -96,6 +96,8 @@
             }, 200);
         });
     </script>
+
+    @stack('scripts')
 </body>
 
 </html>

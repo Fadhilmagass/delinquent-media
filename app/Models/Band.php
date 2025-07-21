@@ -22,6 +22,9 @@ class Band extends Model implements HasMedia
         'origin',
         'genre',
         'bio',
+        'website_url',
+        'bandcamp_url',
+        'spotify_url',
     ];
 
     public function getRouteKeyName()

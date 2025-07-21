@@ -39,6 +39,12 @@ class BandResource extends Resource
                     ->collection('band_photos') // Nama koleksi media
                     ->image()
                     ->imageEditor(),
+                Forms\Components\Section::make('Link Media Sosial')
+                    ->schema([
+                        Forms\Components\TextInput::make('website_url')->label('Website')->url(),
+                        Forms\Components\TextInput::make('bandcamp_url')->label('Bandcamp')->url(),
+                        Forms\Components\TextInput::make('spotify_url')->label('Spotify')->url(),
+                    ])->columns(3),
             ]);
     }
 

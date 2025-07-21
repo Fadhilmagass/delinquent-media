@@ -39,7 +39,7 @@ class ReleaseResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('title')->required()
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                    ->afterStateUpdated(fn(string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->unique(ignoreRecord: true)
@@ -62,6 +62,10 @@ class ReleaseResource extends Resource
                     ->reorderableWithButtons()
                     ->columns(3)
                     ->columnSpanFull(),
+                Forms\Components\TextInput::make('embed_url')
+                    ->label('Spotify/Bandcamp URL')
+                    ->url()
+                    ->helperText('Contoh: https://open.spotify.com/album/xxxx atau https://namaband.bandcamp.com/album/yyyy'),
             ]);
     }
 

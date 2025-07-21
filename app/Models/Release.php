@@ -22,6 +22,7 @@ class Release extends Model implements HasMedia
         'slug',
         'type',
         'release_date',
+        'embed_url',
     ];
 
     protected $casts = [

@@ -42,7 +42,7 @@
                     <div class="h-48 bg-slate-200">
                         @if ($band->hasMedia('band_photos'))
                             <img src="{{ $band->getFirstMediaUrl('band_photos') }}" alt="Foto {{ $band->name }}"
-                                class="w-full h-full object-cover">
+                                class="w-full h-full object-cover" loading="lazy">
                         @else
                             <div class="w-full h-full flex items-center justify-center bg-slate-100">
                                 <svg class="w-12 h-12 text-slate-400" fill="none" stroke="currentColor"
