@@ -1,14 +1,14 @@
 <x-app-layout>
     {{-- Latar belakang abu-abu lembut untuk seluruh halaman --}}
-    <div class="bg-slate-50">
+    <div class="bg-slate-50 dark:bg-slate-900">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
             {{-- 1. Header Halaman yang Informatif --}}
             <div class="text-center mb-12">
-                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 dark:text-slate-200 tracking-tight">
                     Kalender Acara
                 </h1>
-                <p class="mt-3 max-w-2xl mx-auto text-lg text-slate-500">
+                <p class="mt-3 max-w-2xl mx-auto text-lg text-slate-500 dark:text-slate-400">
                     Temukan penampilan, tur, dan acara mendatang dari band favoritmu.
                 </p>
             </div>
@@ -18,7 +18,7 @@
 
                 {{-- Kolom Utama untuk Kalender --}}
                 <div class="lg:col-span-2">
-                    <div class="bg-white border border-slate-200 rounded-2xl shadow-xl p-4 sm:p-6">
+                    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl p-4 sm:p-6">
                         @livewire('event.event-calendar')
                     </div>
                 </div>

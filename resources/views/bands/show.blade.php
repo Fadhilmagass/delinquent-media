@@ -1,6 +1,6 @@
 <x-app-layout>
     {{-- Latar belakang halaman --}}
-    <div class="bg-slate-50 min-h-screen">
+    <div class="bg-slate-50 dark:bg-slate-900 min-h-screen">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
             {{-- 1. Hero Banner & Profile Header --}}
@@ -25,12 +25,12 @@
             <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {{-- Kolom Kiri: Foto & Info --}}
                 <div class="lg:col-span-1 space-y-6">
-                    <div class="bg-white border border-slate-200 rounded-xl shadow-lg">
+                    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg">
                         <div class="p-6">
                             {{-- 2. Info Detail & Ikon Sosial Media Terpusat --}}
                             <div class="flex items-center gap-2">
                                 <span
-                                    class="inline-block bg-red-100 text-red-800 text-sm font-semibold px-3 py-1 rounded-full">
+                                    class="inline-block bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300 text-sm font-semibold px-3 py-1 rounded-full">
                                     {{ $band->genre }}
                                 </span>
                             </div>
@@ -39,7 +39,7 @@
                                 {{-- Tautan Website --}}
                                 @if ($band->website_url)
                                     <a href="{{ $band->website_url }}" target="_blank"
-                                        class="text-gray-500 transition-all duration-300 hover:text-red-600 hover:scale-110 transform">
+                                        class="text-gray-500 dark:text-slate-400 transition-all duration-300 hover:text-red-600 dark:hover:text-red-400 hover:scale-110 transform">
                                         <span class="sr-only">Website</span>
                                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +51,7 @@
                                 {{-- Tautan Bandcamp --}}
                                 @if ($band->bandcamp_url)
                                     <a href="{{ $band->bandcamp_url }}" target="_blank"
-                                        class="text-gray-500 transition-all duration-300 hover:text-red-600 hover:scale-110 transform">
+                                        class="text-gray-500 dark:text-slate-400 transition-all duration-300 hover:text-red-600 dark:hover:text-red-400 hover:scale-110 transform">
                                         <span class="sr-only">Bandcamp</span>
                                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -62,7 +62,7 @@
                                 {{-- Tautan Spotify --}}
                                 @if ($band->spotify_url)
                                     <a href="{{ $band->spotify_url }}" target="_blank"
-                                        class="text-gray-500 transition-all duration-300 hover:text-red-600 hover:scale-110 transform">
+                                        class="text-gray-500 dark:text-slate-400 transition-all duration-300 hover:text-red-600 dark:hover:text-red-400 hover:scale-110 transform">
                                         <span class="sr-only">Spotify</span>
                                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -76,7 +76,7 @@
 
                         {{-- 3. Tombol Aksi Admin dengan Ikon --}}
                         @role('admin')
-                            <div class="bg-slate-50 border-t border-slate-200 px-6 py-4 flex gap-3 rounded-b-xl">
+                            <div class="bg-slate-50 dark:bg-slate-850 border-t border-slate-200 dark:border-slate-700 px-6 py-4 flex gap-3 rounded-b-xl">
                                 <a href="{{ route('bands.edit', $band) }}"
                                     class="flex-1 text-center px-4 py-2 bg-amber-500 text-white text-sm font-semibold rounded-lg hover:bg-amber-600 transition-colors flex items-center justify-center gap-2">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,7 +109,7 @@
                 <div class="lg:col-span-2">
                     {{-- 4. Konten dengan Navigasi Tab --}}
                     <div>
-                        <div class="border-b border-gray-200">
+                        <div class="border-b border-gray-200 dark:border-slate-700">
                             <nav class="-mb-px flex space-x-6" aria-label="Tabs">
                                 <button onclick="changeTab(event, 'bio')" class="tab-button active">Biografi</button>
                                 <button onclick="changeTab(event, 'releases')" class="tab-button">Diskografi</button>
@@ -118,8 +118,8 @@
 
                         <div class="mt-5">
                             <div id="bio" class="tab-panel">
-                                <div class="bg-white border border-slate-200 rounded-xl shadow-lg p-6">
-                                    <div class="prose max-w-none text-slate-600">
+                                <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-lg p-6">
+                                    <div class="prose max-w-none text-slate-600 dark:prose-invert dark:text-slate-300">
                                         {!! $band->bio ?: '<p class="text-slate-400 italic">Biografi belum tersedia.</p>' !!}
                                     </div>
                                 </div>
@@ -137,11 +137,11 @@
     @push('styles')
         <style>
             .tab-button {
-                @apply whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300;
+                @apply whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200 hover:border-gray-300 dark:hover:border-slate-600;
             }
 
             .tab-button.active {
-                @apply border-red-500 text-red-600;
+                @apply border-red-500 dark:border-sky-500 text-red-600 dark:text-sky-400;
             }
         </style>
     @endpush

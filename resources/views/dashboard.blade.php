@@ -1,11 +1,11 @@
 <x-app-layout>
-    <div class="bg-gray-50 py-12">
+    <div class="bg-gray-50 dark:bg-slate-900 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             {{-- Hero Section --}}
             <div class="mb-14 text-center">
-                <h1 class="text-4xl font-bold text-gray-800 mb-3">Selamat Datang di Dashboard Admin</h1>
-                <p class="text-gray-600 text-base">Pantau konten, kelola data, dan tetap kendalikan sistem dengan mudah.
+                <h1 class="text-4xl font-bold text-gray-800 dark:text-slate-200 mb-3">Selamat Datang di Dashboard Admin</h1>
+                <p class="text-gray-600 dark:text-slate-400 text-base">Pantau konten, kelola data, dan tetap kendalikan sistem dengan mudah.
                 </p>
             </div>
 
@@ -42,22 +42,22 @@
 
                 @foreach ($stats as $item)
                     <div
-                        class="bg-white border-t-4 border-{{ $item['color'] }}-900 shadow-md rounded-xl p-6 hover:shadow-lg transform hover:-translate-y-1 transition duration-200">
+                        class="bg-white dark:bg-slate-800 border-t-4 border-{{ $item['color'] }}-900 shadow-md rounded-xl p-6 hover:shadow-lg transform hover:-translate-y-1 transition duration-200">
                         <div
                             class="flex items-center justify-center w-12 h-12 rounded-full bg-{{ $item['color'] }}-900 mb-4 mx-auto">
                             <x-dynamic-component :component="'heroicon-o-' . $item['icon']" class="w-6 h-6 text-zinc-900" />
                         </div>
                         <div class="text-center">
                             <div class="text-3xl font-bold text-{{ $item['color'] }}-700">{{ $item['count'] }}</div>
-                            <div class="mt-1 text-gray-600 font-medium">Total {{ $item['label'] }}</div>
+                            <div class="mt-1 text-gray-600 dark:text-slate-400 font-medium">Total {{ $item['label'] }}</div>
                         </div>
                     </div>
                 @endforeach
             </div>
 
             {{-- Navigasi Cepat --}}
-            <div class="bg-white shadow rounded-xl p-8 mb-16">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+            <div class="bg-white dark:bg-slate-800 shadow rounded-xl p-8 mb-16">
+                <h2 class="text-2xl font-semibold text-gray-800 dark:text-slate-200 mb-6 flex items-center gap-2">
                     <x-heroicon-o-bolt class="w-6 h-6 text-blue-600" />
                     Akses Manajemen Cepat
                 </h2>
@@ -129,24 +129,24 @@
             </div>
 
             {{-- Komentar Terbaru --}}
-            <div class="bg-white shadow rounded-xl p-6">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Komentar Terbaru</h2>
-                <ul class="divide-y divide-gray-200">
+            <div class="bg-white dark:bg-slate-800 shadow rounded-xl p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 dark:text-slate-200 mb-6">Komentar Terbaru</h2>
+                <ul class="divide-y divide-gray-200 dark:divide-slate-700">
                     @forelse (\App\Models\Comment::latest()->take(5)->get() as $comment)
                         <li class="py-4">
-                            <p class="text-sm text-gray-600">
+                            <p class="text-sm text-gray-600 dark:text-slate-400">
                                 <span class="font-semibold">{{ $comment->user?->name ?? 'Anonim' }}</span>
                                 mengomentari
                                 <a href="{{ route('articles.show', $comment->article) }}"
-                                    class="text-blue-600 hover:underline">
+                                    class="text-blue-600 dark:text-sky-400 hover:underline">
                                     {{ $comment->article->title }}
                                 </a>
                             </p>
-                            <p class="mt-1 text-gray-800 text-sm">{{ Str::limit($comment->body, 100) }}</p>
-                            <p class="text-xs text-gray-500 mt-1">{{ $comment->created_at->diffForHumans() }}</p>
+                            <p class="mt-1 text-gray-800 dark:text-slate-300 text-sm">{{ Str::limit($comment->body, 100) }}</p>
+                            <p class="text-xs text-gray-500 dark:text-slate-500 mt-1">{{ $comment->created_at->diffForHumans() }}</p>
                         </li>
                     @empty
-                        <li class="text-center text-gray-500 py-4">Belum ada komentar terbaru.</li>
+                        <li class="text-center text-gray-500 dark:text-slate-400 py-4">Belum ada komentar terbaru.</li>
                     @endforelse
                 </ul>
             </div>
