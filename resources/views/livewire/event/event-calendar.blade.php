@@ -5,7 +5,8 @@
             <div
                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700">
                 <div class="relative">
-                    <label for="filter-kota" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Kota</label>
+                    <label for="filter-kota"
+                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Kota</label>
                     <select id="filter-kota" wire:model.live="selectedCity"
                         class="block w-full rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 shadow-sm focus:border-red-500 focus:ring-red-500 transition pl-4 pr-10">
                         <option value="">Pilih Kota</option>
@@ -15,7 +16,8 @@
                     </select>
                 </div>
                 <div class="relative">
-                    <label for="filter-bulan" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Bulan</label>
+                    <label for="filter-bulan"
+                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Bulan</label>
                     <select id="filter-bulan" wire:model.live="selectedMonth"
                         class="block w-full rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 shadow-sm focus:border-red-500 focus:ring-red-500 transition pl-4 pr-10">
                         <option value="">Pilih Bulan</option>
@@ -25,7 +27,8 @@
                     </select>
                 </div>
                 <div class="relative">
-                    <label for="filter-genre" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Genre</label>
+                    <label for="filter-genre"
+                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Genre</label>
                     <select id="filter-genre" wire:model.live="selectedGenre"
                         class="block w-full rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 shadow-sm focus:border-red-500 focus:ring-red-500 transition pl-4 pr-10">
                         <option value="">Pilih Genre</option>
@@ -94,13 +97,15 @@
                                         </div>
                                     </div>
                                     <div class="p-4">
-                                        <h4 class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">Lineup:</h4>
+                                        <h4 class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">
+                                            Lineup:</h4>
                                         <div class="flex flex-wrap gap-2">
                                             @forelse ($event->bands as $band)
                                                 <span
                                                     class="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold px-2.5 py-1 rounded-full">{{ $band->name }}</span>
                                             @empty
-                                                <span class="text-xs text-slate-400 dark:text-slate-500 italic">Lineup belum
+                                                <span class="text-xs text-slate-400 dark:text-slate-500 italic">Lineup
+                                                    belum
                                                     diumumkan.</span>
                                             @endforelse
                                         </div>
@@ -111,23 +116,30 @@
                     </div>
                     <div class="mt-12 flex justify-center">{{ $events->links() }}</div>
                 @else
-                    <div class="text-center bg-white dark:bg-slate-800 rounded-2xl p-12 border border-dashed dark:border-slate-700">
-                        <svg class="mx-auto h-12 w-12 text-slate-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
+                    <div
+                        class="text-center bg-white dark:bg-slate-800 rounded-2xl p-12 border border-dashed dark:border-slate-700">
+                        <svg class="mx-auto h-12 w-12 text-slate-400 dark:text-slate-500" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <h3 class="mt-2 text-xl font-semibold text-slate-800 dark:text-slate-200">Oops, Belum Ada Acara</h3>
-                        <p class="mt-1 text-base text-slate-500 dark:text-slate-400">Tidak ditemukan event yang sesuai dengan filter Anda.
+                        <h3 class="mt-2 text-xl font-semibold text-slate-800 dark:text-slate-200">Oops, Belum Ada Acara
+                        </h3>
+                        <p class="mt-1 text-base text-slate-500 dark:text-slate-400">Tidak ditemukan event yang sesuai
+                            dengan filter Anda.
                             Coba ubah kriteria pencarianmu.</p>
                     </div>
                 @endif
             @else
-                <div class="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-2xl shadow-xl" wire:ignore x-data="calendar">
+                <div class="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-2xl shadow-xl" wire:ignore
+                    x-data="calendar">
                     <div x-ref="calendar"></div>
                 </div>
             @endif
         </div>
-
     </div>
 </div>
+
+@push('scripts')
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+@endpush

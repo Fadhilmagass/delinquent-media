@@ -11,6 +11,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Band extends Model implements HasMedia
 {
@@ -61,5 +62,27 @@ class Band extends Model implements HasMedia
             ->width(100)
             ->height(100)
             ->sharpen(10);
+    }
+
+    /**
+     * Get the URL of the band's photo.
+     */
+    protected function photoUrl(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $thumbUrl = $this->getFirstMediaUrl('band-photos', 'thumb');
+                if ($thumbUrl) {
+                    return $thumbUrl;
+                }
+
+                $originalUrl = $this->getFirstMediaUrl('band-photos');
+                if ($originalUrl) {
+                    return $originalUrl;
+                }
+
+                return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+            }
+        );
     }
 }

@@ -6,7 +6,7 @@ use App\Models\Band;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-    class BandController extends Controller
+class BandController extends Controller
 {
     public function __construct()
     {
@@ -23,8 +23,8 @@ use Illuminate\View\View;
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', '%' . $search . '%')
-                  ->orWhere('genre', 'like', '%' . $search . '%')
-                  ->orWhere('origin', 'like', '%' . $search . '%');
+                    ->orWhere('genre', 'like', '%' . $search . '%')
+                    ->orWhere('origin', 'like', '%' . $search . '%');
             });
         }
 

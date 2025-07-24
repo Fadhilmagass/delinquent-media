@@ -47,9 +47,9 @@ class EventController extends Controller
     /**
      * Halaman detail event
      */
-    public function show(Event $event)
+    public function show(string $slug)
     {
-        $event->load(['bands.media']);
+        $event = Event::where('slug', $slug)->with('bands.media')->firstOrFail();
 
         return view('events.show', compact('event'));
     }

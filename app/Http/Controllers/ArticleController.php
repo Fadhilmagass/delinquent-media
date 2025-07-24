@@ -41,7 +41,7 @@ class ArticleController extends Controller
         }
 
         // Performa: Eager load relasi
-        $article->load(['user', 'category', 'tags']);
+        $article->load(['user', 'category', 'tags', 'comments']);
 
         /**
          * Ambil Artikel Terkait (dari kategori yang sama, kecuali artikel ini)

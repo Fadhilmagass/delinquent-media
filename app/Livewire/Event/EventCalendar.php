@@ -6,6 +6,7 @@ use App\Models\Band;
 use App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -30,8 +31,13 @@ class EventCalendar extends Component
     public function mount()
     {
         // Mengisi data untuk dropdown filter saat komponen pertama kali dimuat
-        $this->cities = Event::select('city')->distinct()->orderBy('city')->pluck('city')->toArray();
-        $this->genres = Band::select('genre')->distinct()->whereNotNull('genre')->orderBy('genre')->pluck('genre')->toArray();
+        $this->cities = Cache::remember('event_cities', now()->addHour(), function () {
+            return Event::select('city')->distinct()->orderBy('city')->pluck('city')->toArray();
+        });
+
+        $this->genres = Cache::remember('band_genres', now()->addHour(), function () {
+            return Band::select('genre')->distinct()->whereNotNull('genre')->orderBy('genre')->pluck('genre')->toArray();
+        });
 
         // Membuat daftar bulan untuk filter (6 bulan ke depan)
         for ($i = 0; $i < 6; $i++) {
@@ -48,13 +54,10 @@ class EventCalendar extends Component
 
     public function render()
     {
-        $events = []; // Inisialisasi sebagai array kosong
-        // Query dasar
         $query = Event::query()
-            ->where('event_time', '>=', now()) // Hanya event mendatang
-            ->with('bands'); // Eager load bands untuk performa
+            ->where('event_time', '>=', now())
+            ->with('bands');
 
-        // Terapkan filter jika ada
         if ($this->selectedCity) {
             $query->where('city', $this->selectedCity);
         }
@@ -70,11 +73,17 @@ class EventCalendar extends Component
             });
         }
 
-        // Ambil data sesuai view mode
         if ($this->viewMode === 'list') {
-            $events = $query->orderBy('event_time', 'asc')->paginate(10);
+            $currentPage = $this->getPage();
+            $cacheKey = 'events-list-' . $this->selectedCity . '-' . $this->selectedMonth . '-' . $this->selectedGenre . '-page-' . $currentPage;
+            $events = Cache::remember($cacheKey, now()->addMinutes(15), function () use ($query) {
+                return $query->orderBy('event_time', 'asc')->paginate(10);
+            });
         } else {
-            $events = $query->orderBy('event_time', 'asc')->get();
+            $cacheKey = 'events-calendar-' . $this->selectedCity . '-' . $this->selectedMonth . '-' . $this->selectedGenre;
+            $events = Cache::remember($cacheKey, now()->addMinutes(15), function () use ($query) {
+                return $query->orderBy('event_time', 'asc')->get();
+            });
             $this->formatEventsForCalendar($events);
             $this->dispatch('eventsUpdated', $this->eventsForCalendar);
         }

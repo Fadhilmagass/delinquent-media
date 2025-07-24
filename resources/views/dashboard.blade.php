@@ -1,154 +1,156 @@
 <x-app-layout>
-    <div class="bg-gray-50 dark:bg-slate-900 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-gray-50 dark:bg-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-            {{-- Hero Section --}}
-            <div class="mb-14 text-center">
-                <h1 class="text-4xl font-bold text-gray-800 dark:text-slate-200 mb-3">Selamat Datang di Dashboard Admin</h1>
-                <p class="text-gray-600 dark:text-slate-400 text-base">Pantau konten, kelola data, dan tetap kendalikan sistem dengan mudah.
+            {{-- Header --}}
+            <div class="mb-12 text-center">
+                <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-slate-100 sm:text-5xl">
+                    Dashboard Admin
+                </h1>
+                <p class="mt-3 text-base text-gray-600 dark:text-slate-400">
+                    Pantau konten, kelola data, dan tetap kendalikan sistem dengan mudah.
                 </p>
             </div>
 
-            {{-- Statistik --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                @php
-                    $stats = [
-                        [
-                            'icon' => 'document-text',
-                            'count' => \App\Models\Article::count(),
-                            'label' => 'Artikel',
-                            'color' => 'blue',
-                        ],
-                        [
-                            'icon' => 'musical-note',
-                            'count' => \App\Models\Band::count(),
-                            'label' => 'Band',
-                            'color' => 'green',
-                        ],
-                        [
-                            'icon' => 'clock',
-                            'count' => \App\Models\Release::count(),
-                            'label' => 'Rilisan',
-                            'color' => 'purple',
-                        ],
-                        [
-                            'icon' => 'users',
-                            'count' => \App\Models\User::count(),
-                            'label' => 'Pengguna',
-                            'color' => 'red',
-                        ],
-                    ];
-                @endphp
-
-                @foreach ($stats as $item)
-                    <div
-                        class="bg-white dark:bg-slate-800 border-t-4 border-{{ $item['color'] }}-900 shadow-md rounded-xl p-6 hover:shadow-lg transform hover:-translate-y-1 transition duration-200">
-                        <div
-                            class="flex items-center justify-center w-12 h-12 rounded-full bg-{{ $item['color'] }}-900 mb-4 mx-auto">
-                            <x-dynamic-component :component="'heroicon-o-' . $item['icon']" class="w-6 h-6 text-zinc-900" />
+            <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-8">
+                {{-- Main Content --}}
+                <main class="lg:col-span-2 space-y-8">
+                    {{-- Statistik --}}
+                    <section>
+                        @php
+                            $stats = [
+                                [
+                                    'icon' => 'document-text',
+                                    'count' => \App\Models\Article::count(),
+                                    'label' => 'Total Artikel',
+                                    'theme' => [
+                                        'bg' => 'bg-sky-50 dark:bg-sky-900/50',
+                                        'icon' => 'text-sky-600 dark:text-sky-400',
+                                        'border' => 'border-sky-200 dark:border-sky-800',
+                                    ],
+                                ],
+                                [
+                                    'icon' => 'musical-note',
+                                    'count' => \App\Models\Band::count(),
+                                    'label' => 'Total Band',
+                                    'theme' => [
+                                        'bg' => 'bg-emerald-50 dark:bg-emerald-900/50',
+                                        'icon' => 'text-emerald-600 dark:text-emerald-400',
+                                        'border' => 'border-emerald-200 dark:border-emerald-800',
+                                    ],
+                                ],
+                                [
+                                    'icon' => 'clock',
+                                    'count' => \App\Models\Release::count(),
+                                    'label' => 'Total Rilisan',
+                                    'theme' => [
+                                        'bg' => 'bg-purple-50 dark:bg-purple-900/50',
+                                        'icon' => 'text-purple-600 dark:text-purple-400',
+                                        'border' => 'border-purple-200 dark:border-purple-800',
+                                    ],
+                                ],
+                                [
+                                    'icon' => 'users',
+                                    'count' => \App\Models\User::count(),
+                                    'label' => 'Total Pengguna',
+                                    'theme' => [
+                                        'bg' => 'bg-rose-50 dark:bg-rose-900/50',
+                                        'icon' => 'text-rose-600 dark:text-rose-400',
+                                        'border' => 'border-rose-200 dark:border-rose-800',
+                                    ],
+                                ],
+                            ];
+                        @endphp
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            @foreach ($stats as $item)
+                                <div
+                                    class="flex items-center p-5 {{ $item['theme']['bg'] }} border {{ $item['theme']['border'] }} rounded-2xl shadow-sm transition-transform hover:scale-[1.02] hover:shadow-md">
+                                    <div class="mr-5">
+                                        <x-dynamic-component :component="'heroicon-o-' . $item['icon']"
+                                            class="w-9 h-9 {{ $item['theme']['icon'] }}" />
+                                    </div>
+                                    <div>
+                                        <div class="text-3xl font-bold text-gray-900 dark:text-slate-100">
+                                            {{ $item['count'] }}</div>
+                                        <div class="text-sm font-medium text-gray-600 dark:text-slate-400">
+                                            {{ $item['label'] }}</div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-{{ $item['color'] }}-700">{{ $item['count'] }}</div>
-                            <div class="mt-1 text-gray-600 dark:text-slate-400 font-medium">Total {{ $item['label'] }}</div>
+                    </section>
+
+                    {{-- Navigasi Cepat --}}
+                    <section class="bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/50 shadow-sm rounded-2xl">
+                        <div class="p-6">
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-slate-100 flex items-center gap-3">
+                                <x-heroicon-o-bolt class="w-6 h-6 text-sky-500" />
+                                Akses Manajemen Cepat
+                            </h2>
                         </div>
-                    </div>
-                @endforeach
-            </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-200 dark:bg-slate-700/50 rounded-b-2xl overflow-hidden">
+                            @php
+                                $menus = [
+                                    ['url' => '/admin/articles', 'icon' => 'document-text', 'label' => 'Artikel'],
+                                    ['url' => '/admin/bands', 'icon' => 'musical-note', 'label' => 'Band'],
+                                    ['url' => '/admin/releases', 'icon' => 'clock', 'label' => 'Rilisan'],
+                                    ['url' => '/admin/events', 'icon' => 'calendar', 'label' => 'Event'],
+                                    ['url' => '/admin/comments', 'icon' => 'chat-bubble-left-right', 'label' => 'Komentar'],
+                                    ['url' => '/admin/categories', 'icon' => 'list-bullet', 'label' => 'Kategori'],
+                                    ['url' => '/admin/tags', 'icon' => 'tag', 'label' => 'Tag'],
+                                    ['url' => '/admin/users', 'icon' => 'users', 'label' => 'Pengguna'],
+                                ];
+                            @endphp
 
-            {{-- Navigasi Cepat --}}
-            <div class="bg-white dark:bg-slate-800 shadow rounded-xl p-8 mb-16">
-                <h2 class="text-2xl font-semibold text-gray-800 dark:text-slate-200 mb-6 flex items-center gap-2">
-                    <x-heroicon-o-bolt class="w-6 h-6 text-blue-600" />
-                    Akses Manajemen Cepat
-                </h2>
-
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
-                    @php
-                        $menus = [
-                            [
-                                'url' => '/admin/articles',
-                                'icon' => 'document-text',
-                                'label' => 'Kelola Artikel',
-                                'color' => 'blue',
-                            ],
-                            [
-                                'url' => '/admin/bands',
-                                'icon' => 'musical-note',
-                                'label' => 'Kelola Band',
-                                'color' => 'green',
-                            ],
-                            [
-                                'url' => '/admin/releases',
-                                'icon' => 'clock',
-                                'label' => 'Kelola Rilisan',
-                                'color' => 'purple',
-                            ],
-                            [
-                                'url' => '/admin/events',
-                                'icon' => 'calendar',
-                                'label' => 'Kelola Event',
-                                'color' => 'yellow',
-                            ],
-                            [
-                                'url' => '/admin/comments',
-                                'icon' => 'chat-bubble-left-right',
-                                'label' => 'Kelola Komentar',
-                                'color' => 'red',
-                            ],
-                            [
-                                'url' => '/admin/categories',
-                                'icon' => 'list-bullet',
-                                'label' => 'Kelola Kategori',
-                                'color' => 'indigo',
-                            ],
-                            [
-                                'url' => '/admin/tags',
-                                'icon' => 'tag',
-                                'label' => 'Kelola Tag',
-                                'color' => 'pink',
-                            ],
-                            [
-                                'url' => '/admin/users',
-                                'icon' => 'users',
-                                'label' => 'Kelola Pengguna',
-                                'color' => 'blue',
-                            ],
-                        ];
-                    @endphp
-
-                    @foreach ($menus as $menu)
-                        <a href="{{ url($menu['url']) }}"
-                            class="flex flex-col items-center text-center bg-{{ $menu['color'] }}-50 hover:bg-{{ $menu['color'] }}-100 border border-{{ $menu['color'] }}-200 rounded-lg p-5 shadow-sm hover:shadow-md transition group">
-                            <x-dynamic-component :component="'heroicon-o-' . $menu['icon']"
-                                class="w-8 h-8 mb-2 text-{{ $menu['color'] }}-600 group-hover:text-{{ $menu['color'] }}-800" />
-                            <span
-                                class="text-sm font-medium text-{{ $menu['color'] }}-700 group-hover:text-{{ $menu['color'] }}-900">{{ $menu['label'] }}</span>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-
-            {{-- Komentar Terbaru --}}
-            <div class="bg-white dark:bg-slate-800 shadow rounded-xl p-6">
-                <h2 class="text-2xl font-semibold text-gray-800 dark:text-slate-200 mb-6">Komentar Terbaru</h2>
-                <ul class="divide-y divide-gray-200 dark:divide-slate-700">
-                    @forelse (\App\Models\Comment::latest()->take(5)->get() as $comment)
-                        <li class="py-4">
-                            <p class="text-sm text-gray-600 dark:text-slate-400">
-                                <span class="font-semibold">{{ $comment->user?->name ?? 'Anonim' }}</span>
-                                mengomentari
-                                <a href="{{ route('articles.show', $comment->article) }}"
-                                    class="text-blue-600 dark:text-sky-400 hover:underline">
-                                    {{ $comment->article->title }}
+                            @foreach ($menus as $menu)
+                                <a href="{{ url($menu['url']) }}"
+                                    class="flex flex-col items-center justify-center p-5 text-center bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors duration-200 group">
+                                    <x-dynamic-component :component="'heroicon-o-' . $menu['icon']"
+                                        class="w-7 h-7 mb-2 text-gray-500 dark:text-slate-400 group-hover:text-sky-500 dark:group-hover:text-sky-400" />
+                                    <span
+                                        class="text-sm font-medium text-gray-700 dark:text-slate-300">{{ $menu['label'] }}</span>
                                 </a>
-                            </p>
-                            <p class="mt-1 text-gray-800 dark:text-slate-300 text-sm">{{ Str::limit($comment->body, 100) }}</p>
-                            <p class="text-xs text-gray-500 dark:text-slate-500 mt-1">{{ $comment->created_at->diffForHumans() }}</p>
-                        </li>
-                    @empty
-                        <li class="text-center text-gray-500 dark:text-slate-400 py-4">Belum ada komentar terbaru.</li>
-                    @endforelse
-                </ul>
+                            @endforeach
+                        </div>
+                    </section>
+                </main>
+
+                {{-- Sidebar --}}
+                <aside class="mt-8 lg:mt-0">
+                    <div class="bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/50 shadow-sm rounded-2xl p-6">
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-slate-100 mb-4">Komentar Terbaru</h2>
+                        <ul class="space-y-5">
+                            @forelse (\App\Models\Comment::with('user', 'article')->latest()->take(5)->get() as $comment)
+                                <li class="flex items-start">
+                                    <img class="h-9 w-9 rounded-full object-cover mr-4 mt-1"
+                                        src="https://ui-avatars.com/api/?name={{ urlencode($comment->user?->name ?? 'A') }}&color=7F9CF5&background=EBF4FF"
+                                        alt="{{ $comment->user?->name ?? 'Anonim' }}">
+                                    <div class="flex-1">
+                                        <p class="text-sm text-gray-700 dark:text-slate-300">
+                                            <span
+                                                class="font-semibold text-gray-900 dark:text-slate-100">{{ $comment->user?->name ?? 'Anonim' }}</span>
+                                            mengomentari
+                                            <a href="{{ route('articles.show', $comment->article) }}"
+                                                class="font-semibold text-sky-600 dark:text-sky-400 hover:underline">
+                                                {{ Str::limit($comment->article->title, 30) }}
+                                            </a>
+                                        </p>
+                                        <p class="mt-1 text-sm text-gray-600 dark:text-slate-400">{{ Str::limit($comment->body, 80) }}</p>
+                                        <p class="text-xs text-gray-500 dark:text-slate-500 mt-1.5">
+                                            {{ $comment->created_at->diffForHumans() }}</p>
+                                    </div>
+                                </li>
+                            @empty
+                                <li class="text-center text-gray-500 dark:text-slate-400 py-4">
+                                    <div class="flex flex-col items-center">
+                                        <x-heroicon-o-chat-bubble-left-ellipsis class="w-12 h-12 text-gray-400" />
+                                        <p class="mt-2">Belum ada komentar terbaru.</p>
+                                    </div>
+                                </li>
+                            @endforelse
+                        </ul>
+                    </div>
+                </aside>
             </div>
         </div>
     </div>

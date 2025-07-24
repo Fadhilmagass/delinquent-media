@@ -1,5 +1,13 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data x-init="$store.theme = {
+    dark: localStorage.getItem('theme') === 'dark',
+    toggle() {
+        this.dark = !this.dark
+        localStorage.setItem('theme', this.dark ? 'dark' : 'light')
+        document.documentElement.classList.toggle('dark', this.dark)
+    }
+};
+if ($store.theme.dark) document.documentElement.classList.add('dark');" class="scroll-smooth">
 
 <head>
     <meta charset="utf-8" />
@@ -8,49 +16,41 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet">
 
-    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1516273836189-23a43c2b4e8e?q=80&w=2070">
-
-    {{-- Script untuk mencegah FOUC (Flash of Unstyled Content) saat dark mode aktif --}}
-    <script>
-        if (localStorage.getItem('darkMode') === 'true' || (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    </script>
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
 
+    <style>
         /* Custom scrollbar for dark and light mode */
         ::-webkit-scrollbar {
             width: 8px;
         }
+
         html:not(.dark) ::-webkit-scrollbar {
             background: #f1f5f9;
         }
+
         html:not(.dark) ::-webkit-scrollbar-thumb {
             background: #64748b;
             border-radius: 4px;
         }
+
         html.dark ::-webkit-scrollbar {
-            background: #1e293b; /* slate-800 */
+            background: #1e293b;
         }
+
         html.dark ::-webkit-scrollbar-thumb {
-            background: #475569; /* slate-600 */
+            background: #475569;
             border-radius: 4px;
         }
     </style>
 </head>
 
-<body class="font-sans antialiased text-slate-800 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 dark:from-slate-900 dark:via-slate-850 dark:to-slate-800 dark:text-slate-200 transition-colors duration-500">
+<body
+    class="font-sans antialiased text-slate-800 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 dark:from-slate-900 dark:via-slate-850 dark:to-slate-800 dark:text-slate-200 transition-colors duration-500">
 
     <a href="#main-content"
         class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-4 focus:px-6 focus:py-3 focus:bg-gradient-to-r focus:from-sky-500 focus:to-indigo-600 focus:text-white focus:rounded-lg focus:shadow-lg focus:ring-2 focus:ring-sky-500 focus:outline-none transition-all duration-300">
@@ -73,8 +73,10 @@
         @endif
 
         {{-- Konten Utama --}}
-        <main id="main-content" class="flex-grow w-full focus:outline-none transition-all duration-300">
-            <div class="max-w-7xl mx-auto my-8 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-850 rounded-xl shadow-lg py-8 animate-fade-in">
+        <main id="main-content" role="main" tabindex="-1"
+            class="flex-grow w-full focus:outline-none transition-all duration-300">
+            <div
+                class="max-w-7xl mx-auto my-8 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-850 rounded-xl shadow-lg py-8 animate-fade-in">
                 {{ $slot }}
             </div>
         </main>
@@ -94,8 +96,9 @@
     </div>
 
     @livewireScripts
+
     <script>
-        // Animasi fade-in (sudah ada, biarkan saja)
+        // Animasi fade-in
         document.querySelectorAll('.animate-fade-in').forEach(el => {
             el.style.opacity = 0;
             setTimeout(() => {
@@ -114,9 +117,7 @@
         });
     </script>
 
-    <!-- FullCalendar.js via CDN -->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-
+    {{-- FullCalendar hanya jika diperlukan --}}
     @stack('scripts')
 </body>
 
